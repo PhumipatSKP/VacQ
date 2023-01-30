@@ -1,10 +1,10 @@
 // ประกาศตัวแปรเพื่อดึง express dotenv มาใช้งาน
 const express = require('express');
 const dotenv  = require('dotenv');
+const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 
-//route files
-const hospitals  = require('./routes/hospitals');
+
 
 //load env จากไฟล์ config
 dotenv.config({path:'./config/config.env'});
@@ -14,12 +14,20 @@ connectDB();
 
 //ประกาศตัวแปร app จาก express ที่เราเรียกมา
 const app=express();
-
+//Body parser
 app.use(express.json());
 
-app.use('/api/v1/hospitals',hospitals);
+//Cookie parser
+app.use(cookieParser());
 
-//Body parser
+//route files
+const hospitals  = require('./routes/hospitals');
+const auth = require('./routes/auth');
+
+app.use('/api/v1/hospitals',hospitals);
+app.use('/api/v1/auth',auth);
+
+
 
 
 
